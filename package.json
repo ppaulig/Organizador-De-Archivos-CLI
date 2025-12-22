@@ -4,7 +4,9 @@
   "description": "Herramienta de organización de archivos mediante línea de Comandos (CLI), desarrollada con módulos nativos de Node.js.",
   "main": "index.js",
   "scripts": {
-    
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "format": "prettier --write ."
   },
   "repository": {
     "type": "git",
@@ -17,5 +19,10 @@
   "bugs": {
     "url": "https://github.com/ppaulig/Organizador-De-Archivos-CLI/issues"
   },
-  "homepage": "https://github.com/ppaulig/Organizador-De-Archivos-CLI#readme"
+  "homepage": "https://github.com/ppaulig/Organizador-De-Archivos-CLI#readme",
+  "devDependencies": {
+    "eslint": "^9.39.2",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-prettier": "^5.5.4"
+  }
 }
