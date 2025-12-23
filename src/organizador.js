@@ -14,11 +14,11 @@ export async function revisarCarpeta(ruta) {
         // obtenemos SOLO los archivos excluyendo carpetas, y luego los transformamos solo con su nombre (les quitamos las propiedades de withFileTypes)
         return archivos
     } catch (error) {
-        return console.error('Error al abrir la carpeta:' + error)
+        throw new Error('Error al abrir la carpeta:' + error.message)
     }
 }
 
-export function clasificarArchivo(archivo) {
+function clasificarArchivo(archivo) {
     const extensionArchivo = path.extname(archivo).toLocaleLowerCase()
 
     const categorias = {
@@ -50,13 +50,16 @@ export async function crearYmoverCarpetas(arregloArchivos, ruta) {
             const nuevaRutaArchivo = path.join(nuevaRutaCategoria, archivo) // forma la ruta completa al archivo nuevo
 
             return fs.rename(rutaViejaArchivo, nuevaRutaArchivo) // mueve el archivo a la nueva carpeta
-        });
+        })
 
         // ejecuta todo en paralelo
         await Promise.all(promesas)
 
         console.log('Organización exitosa')
     } catch (error) {
-        console.log('Ha ocurrido un error al intentar organizar los archivos' + error)
+        throw new Error(
+            'Ha ocurrido un error al intentar mover los archivos' +
+                error.message
+        )
     }
 }
