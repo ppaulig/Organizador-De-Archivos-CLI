@@ -1,5 +1,6 @@
 import { revisarCarpeta, crearYmoverCarpetas } from './organizador.js'
 
+// Flujo principal del programa
 async function App() {
     const rutaUsuario = process.argv[2] // toma la ruta ingresada por terminal
 

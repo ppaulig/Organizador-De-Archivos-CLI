@@ -5,7 +5,7 @@ import path from 'node:path'
 // Abre la carpeta y devuelve sus archivos
 export async function revisarCarpeta(ruta) {
     try {
-        const contenidoCarpeta = await fs.readdir(ruta, { withFileTypes: true }) // obtiene un arreglo con todos el contenido
+        const contenidoCarpeta = await fs.readdir(ruta, { withFileTypes: true }) // obtiene un arreglo con todo el contenido
 
         const archivos = contenidoCarpeta
             .filter((elemento) => elemento.isFile()) // obtiene solo los archivos, excluyendo carpetas
@@ -54,11 +54,48 @@ export async function crearYmoverCarpetas(arregloArchivos, ruta) {
 
         await Promise.all(promesas) // ejecuta todo en paralelo
 
-        console.log('Organización exitosa')
+        console.log(
+            `Organización exitosa: ${arregloArchivos.length} archivos movidos`
+        )
+
+        verArchivosClasificados(ruta)
     } catch (error) {
         throw new Error(
             'Ha ocurrido un error al intentar mover los archivos' +
                 error.message
         )
+    }
+}
+
+// TODO: agarrar las categorias desde el objeto reutilizable de clasificarArchivo()
+// hacer la muestra dearchivos de manera asincrona paralela
+async function verArchivosClasificados(ruta) {
+    const categorias = [
+        'Imagenes',
+        'Documentos',
+        'Desarrollo',
+        'Audio',
+        'Varios',
+    ]
+
+    // Ver las carpetas q se crearon
+    const contenidoCarpeta = await fs.readdir(ruta, { withFileTypes: true }) // obtiene un arreglo con todo el contenido
+
+    const carpetas = contenidoCarpeta
+        .filter((elemento) => elemento.isDirectory) // obtiene solo las carpetas, excluyendo archivos
+        .map((carpeta) => carpeta.name) // le quita las propiedades de withFileTypes
+
+    // Iterar las categorias y las carpetas
+    const carpetasCategorias = carpetas.filter((carpeta) =>
+        categorias.includes(carpeta)
+    ) // devuelve las carpetas q coinciden con las categorias
+
+    // mostrar los archivos de las carpetas
+    for (const carpeta of carpetasCategorias) {
+        const rutaCarpeta = path.join(ruta, carpeta)
+        console.log(`${rutaCarpeta}:`)
+
+        const archivos = await fs.readdir(rutaCarpeta)
+        archivos.map((archivo) => console.log(archivo))
     }
 }
