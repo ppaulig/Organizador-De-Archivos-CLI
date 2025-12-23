@@ -19,7 +19,7 @@ export async function revisarCarpeta(ruta) {
 }
 
 export function clasificarArchivo(archivo) {
-    const extensionArchivo = path.extname(archivo)
+    const extensionArchivo = path.extname(archivo).toLocaleLowerCase()
 
     const categorias = {
         Imagenes: ['.jpg', '.png', '.gif'],
@@ -33,4 +33,30 @@ export function clasificarArchivo(archivo) {
     }
 
     return 'Varios' // si no esta incluido en ninguna categoria, la ejecucion seguira y se cortara en varios
+}
+
+export async function crearYmoverCarpetas(arregloArchivos, ruta) {
+    //la ruta q pasa el usuario de la carpeta que quiere revisar
+    try {
+        console.log('Trabajando en los archivos ....')
+        // Creamos un arreglo de promesas
+        const promesas = arregloArchivos.map(async (archivo) => {
+            const categoria = clasificarArchivo(archivo)
+            const nuevaRutaCategoria = path.join(ruta, categoria) // arma la ruta a la carpeta
+
+            await fs.mkdir(nuevaRutaCategoria, { recursive: true }) //recursive:true = si ya existe la carpeta ignora el error
+
+            const rutaViejaArchivo = path.join(ruta, archivo) // forma la ruta completa del archivo viejo
+            const nuevaRutaArchivo = path.join(nuevaRutaCategoria, archivo) // forma la ruta completa al archivo nuevo
+
+            return fs.rename(rutaViejaArchivo, nuevaRutaArchivo) // mueve el archivo a la nueva carpeta
+        });
+
+        // ejecuta todo en paralelo
+        await Promise.all(promesas)
+
+        console.log('Organización exitosa')
+    } catch (error) {
+        console.log('Ha ocurrido un error al intentar organizar los archivos' + error)
+    }
 }
