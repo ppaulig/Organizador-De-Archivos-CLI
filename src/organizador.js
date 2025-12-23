@@ -2,24 +2,24 @@
 import fs from 'node:fs/promises'
 import path from 'node:path'
 
-// Abrir la carpeta y ver los archivos dentro
+// Abre la carpeta y devuelve sus archivos
 export async function revisarCarpeta(ruta) {
-    // debemos pasar la ruta completa no solo el nombre de la carpeta
     try {
-        const contenidoCarpeta = await fs.readdir(ruta, { withFileTypes: true }) // obtenemos un arreglo con todos los archivos/carpetas,
-        // fileTypes permite saber si son archivos o carpetas
+        const contenidoCarpeta = await fs.readdir(ruta, { withFileTypes: true }) // obtiene un arreglo con todos el contenido
+
         const archivos = contenidoCarpeta
-            .filter((elemento) => elemento.isFile())
-            .map((archivo) => archivo.name)
-        // obtenemos SOLO los archivos excluyendo carpetas, y luego los transformamos solo con su nombre (les quitamos las propiedades de withFileTypes)
+            .filter((elemento) => elemento.isFile()) // obtiene solo los archivos, excluyendo carpetas
+            .map((archivo) => archivo.name) // le quita las propiedades de withFileTypes
+
         return archivos
     } catch (error) {
         throw new Error('Error al abrir la carpeta:' + error.message)
     }
 }
 
+// Recibe un archivo, lo clasifica y devuelve el nombre de la categoría
 function clasificarArchivo(archivo) {
-    const extensionArchivo = path.extname(archivo).toLocaleLowerCase()
+    const extensionArchivo = path.extname(archivo).toLowerCase() // obtiene la extensión del archivo
 
     const categorias = {
         Imagenes: ['.jpg', '.png', '.gif'],
@@ -29,31 +29,30 @@ function clasificarArchivo(archivo) {
     }
 
     for (let categoria in categorias) {
-        if (categorias[categoria].includes(extensionArchivo)) return categoria // si incluye una categoria la ejecucion corta y devuelve el nombre de ella
+        if (categorias[categoria].includes(extensionArchivo)) return categoria // itera cada categoría y devuelve su nombre si coincide la extesión
     }
 
-    return 'Varios' // si no esta incluido en ninguna categoria, la ejecucion seguira y se cortara en varios
+    return 'Varios' // si la extensión no coincide con ninguna categoría definida, será "Varios"
 }
 
+// Crea las carpetas según las categorías y mueve los archivos correspondientes a ellas
 export async function crearYmoverCarpetas(arregloArchivos, ruta) {
-    //la ruta q pasa el usuario de la carpeta que quiere revisar
     try {
         console.log('Trabajando en los archivos ....')
-        // Creamos un arreglo de promesas
+
         const promesas = arregloArchivos.map(async (archivo) => {
             const categoria = clasificarArchivo(archivo)
-            const nuevaRutaCategoria = path.join(ruta, categoria) // arma la ruta a la carpeta
+            const rutaCarpetaCategoria = path.join(ruta, categoria) // arma la ruta a la carpeta de la categoría
 
-            await fs.mkdir(nuevaRutaCategoria, { recursive: true }) //recursive:true = si ya existe la carpeta ignora el error
+            await fs.mkdir(rutaCarpetaCategoria, { recursive: true }) // si no existe la carpeta, la crea
 
-            const rutaViejaArchivo = path.join(ruta, archivo) // forma la ruta completa del archivo viejo
-            const nuevaRutaArchivo = path.join(nuevaRutaCategoria, archivo) // forma la ruta completa al archivo nuevo
+            const rutaOriginalArchivo = path.join(ruta, archivo) // forma la ruta original del archivo
+            const nuevaRutaArchivo = path.join(rutaCarpetaCategoria, archivo) // forma la ruta nueva del archivo
 
-            return fs.rename(rutaViejaArchivo, nuevaRutaArchivo) // mueve el archivo a la nueva carpeta
+            return fs.rename(rutaOriginalArchivo, nuevaRutaArchivo) // mueve el archivo a la nueva carpeta
         })
 
-        // ejecuta todo en paralelo
-        await Promise.all(promesas)
+        await Promise.all(promesas) // ejecuta todo en paralelo
 
         console.log('Organización exitosa')
     } catch (error) {

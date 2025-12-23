@@ -1,7 +1,7 @@
 import { revisarCarpeta, crearYmoverCarpetas } from './organizador.js'
 
 async function App() {
-    const rutaUsuario = process.argv[2]
+    const rutaUsuario = process.argv[2] // toma la ruta ingresada por terminal
 
     if (!rutaUsuario) {
         console.error('No se ha recibido ninguna ruta')
