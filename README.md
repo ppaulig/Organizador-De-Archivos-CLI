@@ -1,20 +1,43 @@
-# Organizador de Archivos CLI
-Documentación continua de el desarrollo del programa.
+# 📂 Organizador de Archivos CLI
 
+Este proyecto es una herramienta de línea de comandos (CLI) desarrollada en **Node.js** diseñada para organizar archivos automáticamente. El script analiza una carpeta específica, identifica la extensión de cada archivo y los mueve a subcarpetas clasificadas (Imágenes, Documentos, Audio, Desarrollo y Varios.)
 
-## Configuración del entorno
-- Versión de *Node.js*: v24.12.0
-- Prettier + Eslint para desarrollo
+El objetivo principal de este repositorio es demostrar el dominio y la práctica de los **módulos nativos** de Node.js y el manejo de operaciones asíncronas.
 
-## Módulos a utilizar
-- path: Para construir rutas que funcionen en cualquier sistema operativo, evitando errores de barras diagonales.
-- fs: Para leer el contenido de la carpeta, crear nuevos directorios y mover los archivos.
-- os: Para obtener información del sistema, como la ruta del usuario actual o el separador de archivos.
-- process: Para capturar los argumentos que el usuario pase por la terminal.
+## ʚଓ Módulos Nativos Utilizados
+* **`fs/promises`**: Utilizado para leer el contenido de directorios, crear carpetas y mover archivos de forma asíncrona.
+* **`path`**: Crucial para construir rutas que funcionen en cualquier sistema operativo, evitando errores de compatibilidad con barras diagonales.
+* **`process`**: Empleado para capturar los argumentos ingresados por el usuario en la terminal (`process.argv`).
+* **`util`**: Implementado para mejorar la experiencia visual en la terminal mediante el formateo y coloreado de texto con `styleText`.
 
-## Idea general
-Crear un script que analice una carpeta específica, identifique la extensión de cada archivo y los mueva automáticamente a subcarpetas organizadas (por ejemplo: .jpg a una carpeta de "Imágenes", .pdf a "Documentos", etc.).
+## ʚଓ Estructura del Código
+* **`app.js`**: Punto de entrada que gestiona el flujo principal y la captura de argumentos del sistema.
+* **`organizador.js`**: Contiene la lógica de lectura, clasificación, movimiento y visualización de archivos.
+* **`utils.js`**: Define las categorías y las extensiones de archivo soportadas.
 
-## Comandos
-- npm install
-- npm start -- "ruta/de/la/carpeta" o npm start -- ./ruta/de/la/carpeta
+## ʚଓ Características Técnicas
+* **Procesamiento Paralelo**: Implementación de `Promise.all` para ejecutar el movimiento de archivos de forma simultánea, optimizando el rendimiento.
+* **Normalización de Rutas**: Uso de `path.resolve` para convertir rutas relativas ingresadas por el usuario en rutas absolutas seguras.
+* **Recursividad en Directorios**: Uso de `mkdir` con la opción `{ recursive: true }` para asegurar la creación de carpetas sin errores si estas ya existen.
+* **Manejo de Errores**: Sistema de propagación de errores (`throw new Error`) desde los módulos lógicos hasta el flujo principal en `app.js`.
+
+## ʚଓ Configuración y Comandos
+
+### Requisitos
+- **Node.js**: v24.12.0 o superior.
+- **Gestor de paquetes**: npm (incluido con Node.js).
+
+### Instalación
+```bash
+# Clonar el repositorio
+git clone 
+
+# Instalar dependencias de desarrollo (ESLint/Prettier)
+npm install
+```
+  
+### Uso
+Para organizar una carpeta, ejecuta el comando start seguido de la ruta (relativa o absoluta) tras el separador --:
+```bash
+npm start -- "./ruta/de/la/carpeta"
+```

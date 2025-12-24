@@ -1,8 +1,4 @@
-import {
-    revisarCarpeta,
-    crearYmoverCarpetas,
-    verArchivosClasificados,
-} from './organizador.js'
+import { revisarCarpeta, crearYmoverCarpetas, verArchivosClasificados } from './organizador.js'
 import path from 'node:path'
 
 // Flujo principal del programa
@@ -28,10 +24,7 @@ async function App() {
         console.log('')
         await verArchivosClasificados(rutaUsuario)
     } catch (error) {
-        console.error(
-            'Ha ocurrido un error al intentar organizar la carpeta' +
-                error.message
-        )
+        console.error('Ha ocurrido un error al intentar organizar la carpeta' + error.message)
     }
 }
 

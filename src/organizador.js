@@ -1,6 +1,7 @@
 // Lógica para clasificar y mover archivos
 import fs from 'node:fs/promises'
 import path from 'node:path'
+import util from 'node:util'
 import { categorias } from './utils.js'
 
 // Abre la carpeta y devuelve sus archivos
@@ -48,14 +49,9 @@ export async function crearYmoverCarpetas(arregloArchivos, ruta) {
 
         await Promise.all(promesas) // ejecuta todo en paralelo
 
-        console.log(
-            `Organización exitosa: ${arregloArchivos.length} archivos movidos`
-        )
+        console.log(util.styleText(['green'], `Organización exitosa: ${arregloArchivos.length} archivos movidos`))
     } catch (error) {
-        throw new Error(
-            'Ha ocurrido un error al intentar mover los archivos' +
-                error.message
-        )
+        throw new Error('Ha ocurrido un error al intentar mover los archivos' + error.message)
     }
 }
 
@@ -71,21 +67,19 @@ export async function verArchivosClasificados(ruta) {
         // Busca las carpetas de categorías creadas
         const nombresCategorias = Object.keys(categorias)
         const carpetasCategorias = carpetas.filter(
-            (carpeta) =>
-                nombresCategorias.includes(carpeta) || carpeta == 'Varios'
+            (carpeta) => nombresCategorias.includes(carpeta) || carpeta == 'Varios'
         )
 
         // Muestra los archivos organizados de las carpetas
-        console.log('Visualización de archivos organizados en sus carpetas')
+        console.log(util.styleText(['bold'], 'Visualización de archivos organizados en sus carpetas'))
         for (const carpeta of carpetasCategorias) {
             const rutaCarpeta = path.join(ruta, carpeta)
             const archivos = await fs.readdir(rutaCarpeta)
-            console.log(`Carpeta: ${carpeta}`)
+
+            console.log(util.styleText(['gray', 'bold'], `${carpeta}:`))
             for (const archivo of archivos) console.log(`- ${archivo}`)
         }
     } catch (error) {
-        throw new Error(
-            'Error al ver la clasificación de archivos:' + error.message
-        )
+        throw new Error('Error al ver la clasificación de archivos:' + error.message)
     }
 }
