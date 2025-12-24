@@ -53,7 +53,7 @@ En la rama **`tests`** de este repositorio, podrás encontrar:
 
 ```bash
 # Cambiarse a la rama test
-git checkout test
+git checkout tests
 
 # Ejecutar tests
 npm test
