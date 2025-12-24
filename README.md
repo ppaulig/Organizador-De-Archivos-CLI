@@ -9,6 +9,8 @@ El objetivo principal de este repositorio es demostrar el dominio y la práctica
 * **`path`**: Crucial para construir rutas que funcionen en cualquier sistema operativo, evitando errores de compatibilidad con barras diagonales.
 * **`process`**: Empleado para capturar los argumentos ingresados por el usuario en la terminal (`process.argv`).
 * **`util`**: Implementado para mejorar la experiencia visual en la terminal mediante el formateo y coloreado de texto con `styleText`.
+* **`node:test`**: Utilizado para la ejecución de pruebas automatizadas de forma nativa.
+* **`node:assert`**: Empleado para realizar las validaciones y comparaciones en los entornos de prueba.  
 
 ## ʚଓ Estructura del Código
 * **`app.js`**: Punto de entrada que gestiona el flujo principal y la captura de argumentos del sistema.
@@ -30,7 +32,7 @@ El objetivo principal de este repositorio es demostrar el dominio y la práctica
 ### Instalación
 ```bash
 # Clonar el repositorio
-git clone 
+git clone https://github.com/ppaulig/Organizador-De-Archivos-CLI.git
 
 # Instalar dependencias de desarrollo (ESLint/Prettier)
 npm install
@@ -40,4 +42,19 @@ npm install
 Para organizar una carpeta, ejecuta el comando start seguido de la ruta (relativa o absoluta) tras el separador --:
 ```bash
 npm start -- "./ruta/de/la/carpeta"
+```  
+
+## ʚଓ Tests
+Este proyecto cuenta con una estrategia de pruebas para asegurar la integridad de la lógica y el funcionamiento del programa.
+
+En la rama **`tests`** de este repositorio, podrás encontrar:
+* **Tests Unitarios**: Pruebas aisladas para cada función.
+* **Tests de Integración**: Pruebas que validan el flujo completo desde la lectura de la carpeta hasta el movimiento final de los archivos.
+
+```bash
+# Cambiarse a la rama test
+git checkout test
+
+# Ejecutar tests
+npm test
 ```
