@@ -1,6 +1,7 @@
 // Lógica para clasificar y mover archivos
 import fs from 'node:fs/promises'
 import path from 'node:path'
+import { categorias } from './utils.js'
 
 // Abre la carpeta y devuelve sus archivos
 export async function revisarCarpeta(ruta) {
@@ -20,13 +21,6 @@ export async function revisarCarpeta(ruta) {
 // Recibe un archivo, lo clasifica y devuelve el nombre de la categoría
 function clasificarArchivo(archivo) {
     const extensionArchivo = path.extname(archivo).toLowerCase() // obtiene la extensión del archivo
-
-    const categorias = {
-        Imagenes: ['.jpg', '.png', '.gif'],
-        Documentos: ['.pdf', '.docx', '.txt'],
-        Audio: ['.mp3', '.wav'],
-        Desarrollo: ['.js', '.py', '.ts', '.html', '.css', '.jsx', '.tsx'],
-    }
 
     for (let categoria in categorias) {
         if (categorias[categoria].includes(extensionArchivo)) return categoria // itera cada categoría y devuelve su nombre si coincide la extesión
@@ -57,8 +51,6 @@ export async function crearYmoverCarpetas(arregloArchivos, ruta) {
         console.log(
             `Organización exitosa: ${arregloArchivos.length} archivos movidos`
         )
-
-        verArchivosClasificados(ruta)
     } catch (error) {
         throw new Error(
             'Ha ocurrido un error al intentar mover los archivos' +
@@ -67,35 +59,33 @@ export async function crearYmoverCarpetas(arregloArchivos, ruta) {
     }
 }
 
-// TODO: agarrar las categorias desde el objeto reutilizable de clasificarArchivo()
-// hacer la muestra dearchivos de manera asincrona paralela
-async function verArchivosClasificados(ruta) {
-    const categorias = [
-        'Imagenes',
-        'Documentos',
-        'Desarrollo',
-        'Audio',
-        'Varios',
-    ]
+export async function verArchivosClasificados(ruta) {
+    try {
+        // Ve las carpetas que se crearon
+        const contenidoCarpeta = await fs.readdir(ruta, { withFileTypes: true }) // obtiene un arreglo con todo el contenido
 
-    // Ver las carpetas q se crearon
-    const contenidoCarpeta = await fs.readdir(ruta, { withFileTypes: true }) // obtiene un arreglo con todo el contenido
+        const carpetas = contenidoCarpeta
+            .filter((elemento) => elemento.isDirectory()) // obtiene solo las carpetas, excluyendo archivos
+            .map((carpeta) => carpeta.name) // le quita las propiedades de withFileTypes
 
-    const carpetas = contenidoCarpeta
-        .filter((elemento) => elemento.isDirectory) // obtiene solo las carpetas, excluyendo archivos
-        .map((carpeta) => carpeta.name) // le quita las propiedades de withFileTypes
+        // Busca las carpetas de categorías creadas
+        const nombresCategorias = Object.keys(categorias)
+        const carpetasCategorias = carpetas.filter(
+            (carpeta) =>
+                nombresCategorias.includes(carpeta) || carpeta == 'Varios'
+        )
 
-    // Iterar las categorias y las carpetas
-    const carpetasCategorias = carpetas.filter((carpeta) =>
-        categorias.includes(carpeta)
-    ) // devuelve las carpetas q coinciden con las categorias
-
-    // mostrar los archivos de las carpetas
-    for (const carpeta of carpetasCategorias) {
-        const rutaCarpeta = path.join(ruta, carpeta)
-        console.log(`${rutaCarpeta}:`)
-
-        const archivos = await fs.readdir(rutaCarpeta)
-        archivos.map((archivo) => console.log(archivo))
+        // Muestra los archivos organizados de las carpetas
+        console.log('Visualización de archivos organizados en sus carpetas')
+        for (const carpeta of carpetasCategorias) {
+            const rutaCarpeta = path.join(ruta, carpeta)
+            const archivos = await fs.readdir(rutaCarpeta)
+            console.log(`Carpeta: ${carpeta}`)
+            for (const archivo of archivos) console.log(`- ${archivo}`)
+        }
+    } catch (error) {
+        throw new Error(
+            'Error al ver la clasificación de archivos:' + error.message
+        )
     }
 }

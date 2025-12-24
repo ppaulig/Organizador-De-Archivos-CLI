@@ -1,4 +1,8 @@
-import { revisarCarpeta, crearYmoverCarpetas } from './organizador.js'
+import {
+    revisarCarpeta,
+    crearYmoverCarpetas,
+    verArchivosClasificados,
+} from './organizador.js'
 
 // Flujo principal del programa
 async function App() {
@@ -11,12 +15,15 @@ async function App() {
 
     try {
         const archivos = await revisarCarpeta(rutaUsuario)
-        await crearYmoverCarpetas(archivos, rutaUsuario)
 
         if (archivos.length === 0) {
             console.log('No hay archivos para organizar.')
             return
         }
+
+        await crearYmoverCarpetas(archivos, rutaUsuario)
+        console.log('')
+        await verArchivosClasificados(rutaUsuario)
     } catch (error) {
         console.error(
             'Ha ocurrido un error al intentar organizar la carpeta' +
