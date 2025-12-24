@@ -6,7 +6,8 @@
   "scripts": {
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
-    "format": "prettier --write ."
+    "format": "prettier --write .",
+    "start": "node ./src/app.js"
   },
   "repository": {
     "type": "git",

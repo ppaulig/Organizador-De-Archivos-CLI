@@ -3,10 +3,13 @@ import {
     crearYmoverCarpetas,
     verArchivosClasificados,
 } from './organizador.js'
+import path from 'node:path'
 
 // Flujo principal del programa
 async function App() {
-    const rutaUsuario = process.argv[2] // toma la ruta ingresada por terminal
+    const rutaBruta = process.argv[2] // toma la ruta ingresada por terminal
+
+    const rutaUsuario = rutaBruta ? path.resolve(rutaBruta) : null // convierte una ruta relativa a absoluta
 
     if (!rutaUsuario) {
         console.error('No se ha recibido ninguna ruta')

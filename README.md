@@ -14,3 +14,7 @@ Documentación continua de el desarrollo del programa.
 
 ## Idea general
 Crear un script que analice una carpeta específica, identifique la extensión de cada archivo y los mueva automáticamente a subcarpetas organizadas (por ejemplo: .jpg a una carpeta de "Imágenes", .pdf a "Documentos", etc.).
+
+## Comandos
+- npm install
+- npm start -- "ruta/de/la/carpeta" o npm start -- ./ruta/de/la/carpeta
