@@ -20,7 +20,7 @@ export async function revisarCarpeta(ruta) {
 }
 
 // Recibe un archivo, lo clasifica y devuelve el nombre de la categoría
-function clasificarArchivo(archivo) {
+export function clasificarArchivo(archivo) {
     const extensionArchivo = path.extname(archivo).toLowerCase() // obtiene la extensión del archivo
 
     for (let categoria in categorias) {
