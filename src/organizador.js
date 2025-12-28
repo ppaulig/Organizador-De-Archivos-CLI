@@ -24,7 +24,7 @@ function clasificarArchivo(archivo) {
     const extensionArchivo = path.extname(archivo).toLowerCase() // obtiene la extensión del archivo
 
     for (let categoria in categorias) {
-        if (categorias[categoria].includes(extensionArchivo)) return categoria // itera cada categoría y devuelve su nombre si coincide la extesión
+        if (categorias[categoria].includes(extensionArchivo)) return categoria // itera cada categoría y devuelve su nombre si coincide la extensión
     }
 
     return 'Varios' // si la extensión no coincide con ninguna categoría definida, será "Varios"
