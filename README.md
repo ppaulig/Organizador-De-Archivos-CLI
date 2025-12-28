@@ -55,7 +55,7 @@ npm start -- "./Descargas"
 ### ⚬ Instalación
 ```bash
 # Clonar el repositorio
-git clone 
+git clone https://github.com/ppaulig/Organizador-De-Archivos-CLI.git
 
 # Instalar dependencias de desarrollo (ESLint/Prettier)
 npm install
