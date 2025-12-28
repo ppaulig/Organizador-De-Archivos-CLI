@@ -62,8 +62,8 @@ describe('Crea carpetas y mueve archivos', async () => {
     })
 })
 
-describe('Visualizar los archivos clasificados', async () => {
-    beforeEach(async () => crearCarpetasClasificadas(RUTA_TEMPORAL))
+describe('Visualizar archivos clasificados', async () => {
+    beforeEach(async () => await crearCarpetasClasificadas(RUTA_TEMPORAL))
 
     afterEach(async () => await fs.rm(RUTA_TEMPORAL, { recursive: true, force: true }))
 

@@ -1,43 +1,36 @@
-# 📂 Organizador de Archivos CLI
+# Organizador de Archivos CLI - Testing 🧪
 
-Este proyecto es una herramienta de línea de comandos (CLI) desarrollada en **Node.js** diseñada para organizar archivos automáticamente. El script analiza una carpeta específica, identifica la extensión de cada archivo y los mueve a subcarpetas clasificadas (Imágenes, Documentos, Audio, Desarrollo y Varios.)
+Este proyecto utiliza el test runner nativo de Node.js para garantizar que la lógica de organización de archivos sea robusta y segura.   
 
-El objetivo principal de este repositorio es demostrar el dominio y la práctica de los **módulos nativos** de Node.js y el manejo de operaciones asíncronas.
+## ⤿ Estructura
+Dentro de la carpeta tests se encuentra todo lo necesario para construcción de los mismos.
 
-## ʚଓ Módulos Nativos Utilizados
-* **`fs/promises`**: Utilizado para leer el contenido de directorios, crear carpetas y mover archivos de forma asíncrona.
-* **`path`**: Crucial para construir rutas que funcionen en cualquier sistema operativo, evitando errores de compatibilidad con barras diagonales.
-* **`process`**: Empleado para capturar los argumentos ingresados por el usuario en la terminal (`process.argv`).
-* **`util`**: Implementado para mejorar la experiencia visual en la terminal mediante el formateo y coloreado de texto con `styleText`.
+`organizador.test.js:` Contiene pruebas unitarias de cada función del programa.  
 
-## ʚଓ Estructura del Código
-* **`app.js`**: Punto de entrada que gestiona el flujo principal y la captura de argumentos del sistema.
-* **`organizador.js`**: Contiene la lógica de lectura, clasificación, movimiento y visualización de archivos.
-* **`utils.js`**: Define las categorías y las extensiones de archivo soportadas.
+`/utils/crearCarpetas.js:` Contiene funciones reutilizables de apoyo para los tests.
 
-## ʚଓ Características Técnicas
-* **Procesamiento Paralelo**: Implementación de `Promise.all` para ejecutar el movimiento de archivos de forma simultánea, optimizando el rendimiento.
-* **Normalización de Rutas**: Uso de `path.resolve` para convertir rutas relativas ingresadas por el usuario en rutas absolutas seguras.
-* **Recursividad en Directorios**: Uso de `mkdir` con la opción `{ recursive: true }` para asegurar la creación de carpetas sin errores si estas ya existen.
-* **Manejo de Errores**: Sistema de propagación de errores (`throw new Error`) desde los módulos lógicos hasta el flujo principal en `app.js`.
+## ⤿ Características
+**⚬ Sin dependencias externas:** Se utilizan únicamente los módulos `node:test` y `node:assert`.  
 
-## ʚଓ Configuración y Comandos
+**⚬ Entorno seguro:** Para evitar modificar archivos reales durante las pruebas, los tests crean automáticamente una carpeta temporal `./tests/carpeta-temporal` que se limpia después de cada ejecución.  
 
-### Requisitos
-- **Node.js**: v24.12.0 o superior.
-- **Gestor de paquetes**: npm (incluido con Node.js).
+**⚬ Mocks de consola:** Se utilizan técnicas de mocking para verificar que la información mostrada al usuario sea la correcta.
 
-### Instalación
+## ⤿ Tests
+**⚬ Revisar carpeta:** Valida que la app identifique correctamente solo los archivos, ignorando carpetas preexistentes.  
+
+**⚬ Clasificar archivo:** Verifica que la lógica de extensiones asigne la categoría correcta (.pdf ➔ Documentos).  
+
+**⚬ Crea carpetas y mueve archivos:** Asegura que las carpetas se creen y los archivos se desplacen dentro de ellas.  
+
+**⚬ Visualizar archivos clasificados:** Comprueba que el resumen final por consola muestre la estructura esperada.
+
+## ⤿ Ejecución
+Desde la raíz del proyecto, se pueden usar los siguientes comandos:
 ```bash
-# Clonar el repositorio
-git clone 
+# Ejecutar todos los tests una vez
+npm test 
 
-# Instalar dependencias de desarrollo (ESLint/Prettier)
-npm install
-```
-  
-### Uso
-Para organizar una carpeta, ejecuta el comando start seguido de la ruta (relativa o absoluta) tras el separador --:
-```bash
-npm start -- "./ruta/de/la/carpeta"
+# Ejecutar en modo Watch, los tests se vuelven a ejecutar automáticamente al guardar
+npm run test:watch
 ```

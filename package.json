@@ -9,9 +9,7 @@
     "format": "prettier --write .",
     "start": "node ./src/app.js",
     "test": "node --test",
-    "test:watch": "node --watch --test",
-    "test:unit": "node tests/unitarios/organizador.test.js",
-    "test:integration": "node tests/integracion/app.test.js"
+    "test:watch": "node --watch --test"
   },
   "repository": {
     "type": "git",
